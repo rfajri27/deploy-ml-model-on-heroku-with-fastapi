@@ -60,11 +60,13 @@ def process_data(
         y = lb.fit_transform(y.values).ravel()
     else:
         X_categorical = encoder.transform(X_categorical)
+        print('-----', X_categorical.shape, X_continuous.shape, X.shape)
         try:
             y = lb.transform(y.values).ravel()
         # Catch the case where y is None because we're doing inference.
         except AttributeError:
-            pass
+            y = None
 
     X = np.concatenate([X_continuous, X_categorical], axis=1)
+
     return X, y, encoder, lb
